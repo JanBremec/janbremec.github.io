@@ -65,8 +65,8 @@ function AboutCard({ className = "" }: { className?: string }) {
         <hr className="border-t border-white my-6" />
         <h4 className="text-2xl font-semibold mb-4 text-white">Currently Working At:</h4>
         <img
-            src="images/nlb.png"
-            alt="NLB logo"
+            src="images/rs-logo.png"
+            alt="Logo"
             className="w-34 h-14"
           />
       </div>
