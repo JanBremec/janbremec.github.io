@@ -67,8 +67,8 @@ function AboutCard({ className = "" }: { className?: string }) {
         <img
             src="images/rs-logo.png"
             alt="Logo"
-            className="w-34 h-14"
-          />
+            style={{borderRadius: '6px',}}
+            />
       </div>
 
     </div>
