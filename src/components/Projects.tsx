@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { useInView } from './hooks/useInView'; // Assume you have the `useInView` hook
-import { FaPython, FaDatabase, FaHtml5, FaRust, FaJava } from 'react-icons/fa';
-import { CgCPlusPlus } from 'react-icons/cg';
+import { useInView } from './hooks/useInView';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 export function Projects() {
   const projects = [
@@ -31,17 +29,35 @@ export function Projects() {
   ];
 
   return (
-    <section id="projects" className="py-20 bg-gray-900 text-white">
-      <div className="container mx-auto px-4">
-        {/* Currently Working On Section */}
+    <section id="projects" className="py-20 bg-gray-900 text-white relative overflow-hidden">
+      {/* Seamless Gradient Background */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-purple-950 via-black to-gray-900 opacity-50"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 0.5 }}
+        transition={{ duration: 2, ease: 'easeOut' }}
+      ></motion.div>
+
+      {/* Subtle Particle Effect */}
+      <div className="absolute inset-0 opacity-20">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-white rounded-full"
+            initial={{ x: Math.random() * 1000, y: Math.random() * 1000, opacity: 0 }}
+            animate={{ x: Math.random() * 1000, y: Math.random() * 1000, opacity: [0, 1, 0] }}
+            transition={{ duration: Math.random() * 5 + 5, ease: 'linear', repeat: Infinity }}
+          ></motion.div>
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <h2 className="text-4xl font-bold text-center mb-16">My Projects</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <ProjectCard key={index} {...project} />
           ))}
         </div>
-
-        <CurrentlyWorkingOn />
       </div>
     </section>
   );
@@ -49,8 +65,39 @@ export function Projects() {
 
 // Project Card Component
 function ProjectCard({ title, description, image, github, demo }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-100, 100], [10, -10]);
+  const rotateY = useTransform(x, [-100, 100], [-10, 10]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left - rect.width / 2;
+    const offsetY = e.clientY - rect.top - rect.height / 2;
+    x.set(offsetX);
+    y.set(offsetY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
-    <div className="bg-gray-100 text-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow group">
+    <motion.div
+      className="bg-gray-800/20 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow group transform transition-all hover:scale-105"
+      style={{
+        perspective: 1000,
+        rotateX,
+        rotateY,
+        transformStyle: 'preserve-3d',
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="relative overflow-hidden">
         <img
           src={image}
@@ -78,83 +125,8 @@ function ProjectCard({ title, description, image, github, demo }) {
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-400">{description}</p>
       </div>
-    </div>
-  );
-}
-
-
-interface Project {
-  name: string;
-  description: string;
-  image: string;
-  progress: number; // The progress of the project in percentage
-}
-
-export function CurrentlyWorkingOn() {
-  const project: Project = {
-    name: "ML Stock Market Analysis",
-    description: "A project analyzing stock market trends using machine learning.",
-    image: "images/graph.jpg", // Path to your project image
-    progress: 70, // Progress percentage
-  };
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { threshold: 0.2 });
-
-  return (
-    <section ref={sectionRef} className="py-20 bg-gray-900 text-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16">Currently Working On</h2>
-        <div className="bg-gray-800 rounded-lg p-6 shadow-lg space-y-4">
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 mr-4">
-              <img
-                src={project.image}
-                alt={project.name}
-                className="w-full h-full object-cover rounded"
-              />
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold">{project.name}</h3>
-              <p className="text-gray-400 text-sm">{project.description}</p>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
-            <ProjectProgressBar progress={project.progress} isVisible={isInView} />
-          </div>
-          <div className="text-right text-white">{project.progress}% Complete</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-interface ProjectProgressBarProps {
-  progress: number;
-  isVisible: boolean;
-}
-
-function ProjectProgressBar({ progress, isVisible }: ProjectProgressBarProps) {
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(() => {
-        setWidth(progress);
-      }, 500); // Delay the progress bar increase when it comes into view
-      return () => clearTimeout(timer);
-    }
-    return () => setWidth(0);
-  }, [isVisible, progress]);
-
-  return (
-    <div
-      className="h-full bg-green-500 transition-all duration-1000 ease-out"
-      style={{ width: `${width}%` }}
-    ></div>
+    </motion.div>
   );
 }

@@ -56,4 +56,11 @@ html {
   color: white;
 }
 
+.group:hover .skill-card {
+  opacity: 0.5; /* Darken non-hovered cards */
+}
+
+.group .skill-card:hover {
+  opacity: 1; /* Keep the hovered card fully visible */
+}
 
