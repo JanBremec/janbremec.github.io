@@ -2756,7 +2756,7 @@
 
     .portrait-frame {
       min-height: 560px;
-      background: var(--blue);
+      background: #dedede;
       border-radius: 24px;
       position: relative;
       overflow: hidden;
@@ -2769,14 +2769,13 @@
       inset: 0;
       object-fit: cover;
       object-position: center top;
-      mix-blend-mode: multiply;
-      filter: contrast(1.04);
-      transition: filter .5s, mix-blend-mode .5s;
+      mix-blend-mode: normal;
+      filter: none;
+      transition: transform .7s cubic-bezier(.16, 1, .3, 1);
     }
 
     .portrait-frame:hover img {
-      mix-blend-mode: normal;
-      filter: none;
+      transform: scale(1.025);
     }
 
     .portrait-label {
@@ -3597,21 +3596,6 @@
           adds another block to the same idea: technology should make difficult work clearer.</p>
       </div>
       <div class="career-grid">
-        <!-- Sandoz (Finished - 6 months) -->
-        <article class="career-card wide reveal">
-          <div class="career-top">
-            <span class="when">Aug 2025 — Jan 2026</span>
-            <span class="career-duration-badge">6 Months</span>
-          </div>
-          <div>
-            <h3>Data Scientist &amp; AI Engineer</h3>
-            <div class="company">Sandoz</div>
-          </div>
-          <p>Designed and maintained a portfolio simulation platform from scratch, building robust scenario models and
-            optimization tools that connected technical simulation to business strategies.</p>
-          <span class="career-now completed"><i></i> Completed chapter</span>
-        </article>
-
         <!-- Ministry of Digital Transformation - AI Engineer (2 years total) -->
         <article class="career-card wide orange reveal">
           <div class="career-top">
@@ -3627,18 +3611,18 @@
           <span class="career-now"><i></i> Active role</span>
         </article>
 
-        <!-- Ministry of Digital Transformation - Sysadmin -->
-        <article class="career-card reveal">
+        <!-- Sandoz (Finished - 6 months) -->
+        <article class="career-card wide reveal">
           <div class="career-top">
-            <span class="when">Nov 2023 — Oct 2024</span>
-            <span class="career-duration-badge">1 Year</span>
+            <span class="when">Aug 2025 — Jan 2026</span>
+            <span class="career-duration-badge">6 Months</span>
           </div>
           <div>
-            <h3>System Administrator</h3>
-            <div class="company">Ministry of Digital Transformation</div>
+            <h3>Data Scientist &amp; AI Engineer</h3>
+            <div class="company">Sandoz</div>
           </div>
-          <p>Managed core IT infrastructure, resolved distributed system bottlenecks, and ensured dependable day-to-day
-            uptime and network reliability.</p>
+          <p>Designed and maintained a portfolio simulation platform from scratch, building robust scenario models and
+            optimization tools that connected technical simulation to business strategies.</p>
           <span class="career-now completed"><i></i> Completed chapter</span>
         </article>
 
@@ -3654,6 +3638,21 @@
           </div>
           <p>Developed internal tooling and automated workflows that streamlined banking operations and supported
             critical financial services.</p>
+          <span class="career-now completed"><i></i> Completed chapter</span>
+        </article>
+
+        <!-- Ministry of Digital Transformation - Sysadmin -->
+        <article class="career-card reveal">
+          <div class="career-top">
+            <span class="when">Nov 2023 — Oct 2024</span>
+            <span class="career-duration-badge">1 Year</span>
+          </div>
+          <div>
+            <h3>System Administrator</h3>
+            <div class="company">Ministry of Digital Transformation</div>
+          </div>
+          <p>Managed core IT infrastructure, resolved distributed system bottlenecks, and ensured dependable day-to-day
+            uptime and network reliability.</p>
           <span class="career-now completed"><i></i> Completed chapter</span>
         </article>
 
